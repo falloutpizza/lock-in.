@@ -9,6 +9,16 @@ browser.runtime.onInstalled.addListener(async () => {
     await browser.storage.local.set({ timerState });
 });
 
+browser.tabs.onActivated.addListener(async (activeInfo) => {
+    const data = await browser.storage.local.get("timerState");
+    let state = data.timerState;
+    let elapsed = Date.now() - state.startTime;
+    if (state.startTime !== 0) {
+        browser.tabs.sendMessage(activeInfo.tabId, {
+            action: "switchedTab", time: (state.remainingTime - elapsed), running: state.isRunning
+        });
+    }
+});
 
 browser.runtime.onMessage.addListener(async (msg) => {
     const data = await browser.storage.local.get("timerState");

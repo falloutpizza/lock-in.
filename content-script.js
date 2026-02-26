@@ -24,6 +24,13 @@ browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.action === "bg") {
         para.classList.replace(para.classList[1], message.color)
     }
+    if (message.action === "switchedTab") {
+        remainingTime = message.time;
+        isRunning = message.running;
+        console.log(isRunning)
+        createPara();
+        updatePara();
+    }
 });
 
 function formatPara() {
