@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+.para {
+    height: 2.3rem;
+    line-height: 2.3rem;
+    font-family: "Inter", sans-serif;
+    font-size: 2rem;
+    font-weight: bold;
+    padding: 3px 2px;
+    position: fixed;
+    top: 100px;
+    left: 100px;
+    border-radius: 10px;
+    cursor: move;
+    z-index: 999999;
+    user-select: none;
+    color: #F9FDFF;
+    visibility: hidden;
+    transition: 0.2s ease-in-out
+}
+
+.study {
+    background-color: rgb(251, 82, 26);
+}
+
+.sbreak {
+    background-color: rgb(93, 174, 56);
+}
+
+.lbreak {
+    background-color: rgb(56, 170, 174);
+}

@@ -1,0 +1,244 @@
+body {
+    height: 350px;
+    width: 270px;
+    text-align: center;
+    background-color: var(--background-color);
+    color: #F9FDFF;
+    font-family: "Inter", sans-serif;
+    transition: all 0.2s ease-in-out;
+}
+
+h1 {
+    font-size: 20px;
+    margin: auto;
+}
+
+label {
+    font-weight: bold;
+
+}
+
+button {
+    color: #F9FDFF;
+    background-color: var(--button-bg-color);
+    border: 1px solid #F9FDFF;
+    margin: 20px auto;
+    transition: 0.2s ease-in-out;
+}
+
+button:hover {
+    cursor: pointer;
+    background-color: var(--button-hover-bg-color);
+}
+
+input {
+    border: none;
+}
+
+.study-mode-colors {
+    --background-color: rgb(251, 82, 26);
+    --button-bg-color: rgba(242, 141, 107, 0.5);
+    --button-hover-bg-color: rgba(242, 141, 107, 1);
+    --settings-bg-color: rgb(171, 51, 12);
+
+}
+
+.sbreak-mode-colors {
+    --background-color: rgb(93, 174, 56);
+    --button-bg-color: rgba(157, 202, 120, 0.5);
+    --button-hover-bg-color: rgba(157, 202, 120, 1);
+    --settings-bg-color: rgb(39, 110, 6);
+}
+
+.lbreak-mode-colors {
+    --background-color: rgb(56, 170, 174);
+    --button-bg-color: rgba(120, 191, 202, 0.5);
+    --button-hover-bg-color: rgba(120, 191, 202, 1);
+    --settings-bg-color: rgb(58, 142, 160);
+}
+
+.heading {
+    display: flex;
+}
+
+.settings {
+    position: absolute;
+    margin: 2px 0 0 0;
+    height: 20px;
+    width: 20px;
+    transition: 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.settings:hover {
+    transform: rotate(20deg);
+}
+
+.settings:active {
+    transform: rotate(-20deg);
+}
+
+.settings-popup {
+    visibility: hidden;
+    position: absolute;
+    height: 315px;
+    width: 270px;
+    margin-top: 30px;
+    background-color: var(--settings-bg-color);
+    z-index: 2;
+    transform: translateY(10px);
+    transition: 0.2s ease-in-out;
+    animation: fadeOut 0.2s;
+    border-radius: 10px;
+}
+
+.show {
+    visibility: visible;
+    transform: translateY(0px);
+    animation: fadeIn 0.2s
+}
+
+.hide {
+    transform: translateY(10px);
+    animation: fadeOut 0.2s
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+.set-time {
+    text-align: left;
+    margin: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.save-button {
+    width: 60px;
+    height: 26px;
+    font-size: 1rem;
+    text-justify: center;
+    border-radius: 13px;
+}
+
+.slider {
+    display: flex;
+    margin: 15px 10px;
+    height: 25px;
+}
+
+.slider-text {
+    background-color: var(--button-bg-color);
+    border: 1px solid #F9FDFF;
+    line-height: 25px;
+    border-radius: 15px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    z-index: 1;
+    justify-content: space-around;
+}
+
+.slider:hover {
+    cursor: pointer;
+}
+
+.slider-bg {
+    width: 57px;
+    height: 25px;
+    border-radius: 15px 0px 0px 15px;
+    position: absolute;
+    z-index: 0;
+    background-color: var(--button-hover-bg-color);
+    transition: 0.2s ease-in-out;
+}
+
+.slider-bg-study {
+    width: 57px;
+    border-radius: 15px 0px 0px 15px;
+    transform: translateX(0);
+}
+
+.slider-bg-sbreak {
+    width: 101px;
+    border-radius: 0;
+    transform: translateX(55px);
+
+}
+
+.slider-bg-lbreak {
+    width: 94px;
+    border-radius: 0px 15px 15px 0px;
+    transform: translateX(156px);
+}
+
+.study {
+    margin-left: 4px;
+}
+
+.long-break {
+    margin-right: 4px;
+}
+
+.timer-container {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto;
+}
+
+.timer-svg {
+    transform: rotate(-90deg);
+}
+
+.timer-bg {
+    fill: #e0e0e0;
+}
+
+.timer-progress {
+    fill: none;
+    stroke: var(--settings-bg-color);
+    stroke-width: 4;
+    stroke-linecap: round;
+    /* Stroke-dasharray: Total length of the stroke (circumference) */
+    stroke-dasharray: 283;
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 1s linear;
+}
+
+/* Time display text */
+.timer-text {
+    font-size: 20px;
+    font-weight: bold;
+    fill: #333;
+    /* Text color */
+    text-anchor: middle;
+    /* Center text horizontally */
+    dominant-baseline: middle;
+    /* Center text vertically */
+    transform-origin: 50% 50%;
+    transform: rotate(90deg);
+}
+
+.start-button {
+    border-radius: 15px;
+    width: 80px;
+    height: 30px;
+    font-size: 1.2rem;
+}

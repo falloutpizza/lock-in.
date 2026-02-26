@@ -1,0 +1,52 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="popup.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet">
+</head>
+
+<body class="study-mode-colors">
+    <div class="settings-popup hide">
+        <form action="" class="settings-form">
+            <div class="set-time">
+                <label for="study">study length:</label>
+                <input type="number" id="study" value="25" max="120" min="1">
+            </div>
+            <div class="set-time">
+                <label for="sbreak">short break length:</label>
+                <input type="number" id="sbreak" value="5" max="120" min="1">
+            </div>
+            <div class="set-time">
+                <label for="lbreak">long break length:</label>
+                <input type="number" id="lbreak" value="10" max="120" min="1">
+            </div>
+            <button class="save-button">reset</button>
+        </form>
+    </div>
+    <div class="heading">
+        <img src="gear.png" alt="" class="settings">
+        <h1>lock in.</h1>
+    </div>
+    <div class="slider">
+        <div class="slider-text">
+            <div class="study">study |</div>
+            <div class="short-break"> short break |</div>
+            <div class="long-break">long break</div>
+        </div>
+        <div class="slider-bg slider-bg-study"></div>
+    </div>
+    <div class="timer-container">
+        <svg class="timer-svg" width="200px" height="200px" viewBox="0 0 100 100">
+            <circle class="timer-bg" cx="50" cy="50" r="45" />
+            <circle class="timer-progress" cx="50" cy="50" r="45" />
+            <text class="timer-text" x="50" y="50">25:00</text>
+        </svg>
+    </div> <button class="start-button">start</button>
+    <script src="popup.js"></script>
+</body>
+
+</html>
