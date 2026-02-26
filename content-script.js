@@ -31,6 +31,17 @@ browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
         createPara();
         updatePara();
     }
+    if (message.action === "tabReloaded") {
+        remainingTime = message.time;
+        isRunning = message.running;
+        console.log(isRunning)
+        createPara();
+        updatePara();
+    }
+});
+
+document.addEventListener("visibilitychange", () => {
+    isRunning = false;
 });
 
 function formatPara() {
@@ -68,7 +79,7 @@ function createPara() {
     remainingTime -= 1000
 }
 
-function updatePara(time) {
+function updatePara() {
     para.textContent = formatPara()
     remainingTime -= 1000
     let interval = setInterval(() => {

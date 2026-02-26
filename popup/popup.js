@@ -112,7 +112,7 @@ settingsForm.addEventListener("submit", async function (e) {
         currentWindow: true
     });
     await browser.tabs.sendMessage(tab.id, { action: "timeUpdated", time: timerTime });
-    await browser.runtime.sendMessage({ type: "timeUpdated", time: timerTime })
+    await browser.runtime.sendMessage({ type: "timeUpdated", time: timerTime, newTimes: timeSet })
     await loadState()
 })
 
@@ -148,13 +148,17 @@ function updateDisplay() {
 
 async function loadState() {
     localState = await browser.runtime.sendMessage({ type: "getState" });
-    startButton.textContent = localState.isRunning ? "Pause" : "Start";
+    startButton.textContent = localState.isRunning ? "pause" : "start";
+    timerTime = localState.ogTime;
     if (localState.set == "study") {
         sliderBg.classList.replace(sliderBg.classList[1], "slider-bg-study")
+        body.classList.replace(body.classList[0], "study-mode-colors")
     } else if (localState.set == "sbreak") {
         sliderBg.classList.replace(sliderBg.classList[1], "slider-bg-sbreak")
-    } else {
+        body.classList.replace(body.classList[0], "sbreak-mode-colors")
+    } else if (localState.set == "lbreak") {
         sliderBg.classList.replace(sliderBg.classList[1], "slider-bg-lbreak")
+        body.classList.replace(body.classList[0], "lbreak-mode-colors")
     }
     updateDisplay();
 
