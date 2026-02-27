@@ -55,13 +55,6 @@ document.addEventListener("visibilitychange", () => {
     }
 });
 
-function formatPara() {
-    let totalSeconds = Math.floor((ogTime - Date.now() + startTime) / 1000)
-    let minutes = Math.floor(totalSeconds / 60);
-    let seconds = totalSeconds % 60;
-    return String(minutes).padStart(2, "0") + ":" + String(seconds).padStart(2, "0");
-}
-
 function createPara() {
     if (!document.getElementById("draggable-timer")) {
         para.style.visibility = "visible";
@@ -89,6 +82,12 @@ function createPara() {
     para.textContent = formatPara()
 }
 
+function formatPara() {
+    let totalSeconds = Math.floor((ogTime - Date.now() + startTime) / 1000)
+    let minutes = Math.floor(totalSeconds / 60);
+    let seconds = totalSeconds % 60;
+    return String(minutes).padStart(2, "0") + ":" + String(seconds).padStart(2, "0");
+}
 
 function updatePara() {
     para.textContent = formatPara()
