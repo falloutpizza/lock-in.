@@ -24,8 +24,8 @@ studyButton.addEventListener("click",
             active: true,
             currentWindow: true
         });
-        await browser.tabs.sendMessage(tab.id, { action: "bg", color: "study" });
-        await browser.tabs.sendMessage(tab.id, { action: "timeUpdated", time: timerTime });
+        browser.tabs.sendMessage(tab.id, { action: "bg", color: "study" });
+        browser.tabs.sendMessage(tab.id, { action: "timeUpdated", time: timerTime });
 
         await (loadState())
     })
@@ -40,8 +40,8 @@ shortButton.addEventListener("click",
             active: true,
             currentWindow: true
         });
-        await browser.tabs.sendMessage(tab.id, { action: "bg", color: "sbreak" });
-        await browser.tabs.sendMessage(tab.id, { action: "timeUpdated", time: timerTime });
+        browser.tabs.sendMessage(tab.id, { action: "bg", color: "sbreak" });
+        browser.tabs.sendMessage(tab.id, { action: "timeUpdated", time: timerTime });
 
         await (loadState())
 
@@ -59,7 +59,6 @@ longButton.addEventListener("click",
         });
         browser.tabs.sendMessage(tab.id, { action: "bg", color: "lbreak" });
         browser.tabs.sendMessage(tab.id, { action: "timeUpdated", time: timerTime });
-
 
         await (loadState())
     })
@@ -111,8 +110,8 @@ settingsForm.addEventListener("submit", async function (e) {
         active: true,
         currentWindow: true
     });
-    await browser.tabs.sendMessage(tab.id, { action: "timeUpdated", time: timerTime });
-    await browser.runtime.sendMessage({ type: "timeUpdated", time: timerTime, newTimes: timeSet })
+    browser.tabs.sendMessage(tab.id, { action: "timeUpdated", time: timerTime });
+    browser.runtime.sendMessage({ type: "timeUpdated", time: timerTime, newTimes: timeSet })
     await loadState()
 })
 
@@ -129,8 +128,12 @@ function formatTime(ms) {
     );
 }
 
-function updateDisplay() {
+async function updateDisplay() {
     if (!localState) return;
+    const [tab] = await browser.tabs.query({
+        active: true,
+        currentWindow: true
+    });
     let remaining = localState.remainingTime;
     if (localState.isRunning) {
         let elapsed = Date.now() - localState.startTime;
@@ -139,6 +142,7 @@ function updateDisplay() {
     if (remaining <= 0) {
         remaining = 0;
         browser.runtime.sendMessage({ type: "pauseTimer" })
+        browser.tabs.sendMessage(tab.id, { action: "pauseTimer" });
     };
     timerText.textContent = formatTime(remaining);
 
@@ -148,6 +152,7 @@ function updateDisplay() {
 
 async function loadState() {
     localState = await browser.runtime.sendMessage({ type: "getState" });
+    console.log(localState.ogTime)
     startButton.textContent = localState.isRunning ? "pause" : "start";
     timerTime = localState.ogTime;
     if (localState.set == "study") {
@@ -174,10 +179,10 @@ startButton.addEventListener("click", async () => {
     });
     if (localState.isRunning) {
         await browser.runtime.sendMessage({ type: "pauseTimer" });
-        await browser.tabs.sendMessage(tab.id, { action: "pauseTimer" });
+        browser.tabs.sendMessage(tab.id, { action: "pauseTimer" });
     } else {
         await browser.runtime.sendMessage({ type: "startTimer" });
-        await browser.tabs.sendMessage(tab.id, { action: "startTimer", time: localState.remainingTime });
+        browser.tabs.sendMessage(tab.id, { action: "startTimer", time: localState.remainingTime });
     }
     await loadState();
 });

@@ -16,7 +16,7 @@ browser.tabs.onActivated.addListener(async (activeInfo) => {
     let elapsed = Date.now() - state.startTime;
     if (state.startTime !== 0) {
         browser.tabs.sendMessage(activeInfo.tabId, {
-            action: "switchedTab", time: (state.remainingTime - elapsed), running: state.isRunning
+            action: "switchedTab", time: (state.remainingTime - elapsed), running: state.isRunning, color: state.set
         });
     }
 });
@@ -27,10 +27,11 @@ browser.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
     let elapsed = Date.now() - state.startTime;
     if (changeInfo.status === "complete" && state.startTime !== 0) {
         browser.tabs.sendMessage(tabId, {
-            action: "tabReloaded", time: (state.remainingTime - elapsed), running: state.isRunning
+            action: "tabReloaded", time: (state.remainingTime - elapsed), running: state.isRunning, color: state.set
         });
     }
 });
+
 browser.runtime.onMessage.addListener(async (msg) => {
     const data = await browser.storage.local.get("timerState");
     let state = data.timerState;

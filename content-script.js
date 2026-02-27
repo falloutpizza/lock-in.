@@ -1,15 +1,16 @@
 const para = document.createElement("p");
 let isRunning = false
-let remainingTime = 0
-document.body.appendChild(para);
+let ogTime = 0
+let startTime = 0
 para.classList.add("para")
 para.classList.add("study")
 
-
 browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.action === "startTimer") {
-        remainingTime = message.time
+        startTime = Date.now()
+        ogTime = message.time
         isRunning = true
+        document.body.appendChild(para);
         createPara()
         updatePara()
     }
@@ -18,34 +19,44 @@ browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
     }
     if (message.action == "timeUpdated") {
         isRunning = false
-        remainingTime = message.time * 60 * 1000
+        ogTime = message.time * 60 * 1000
+        startTime = Date.now()
         para.textContent = formatPara()
     }
     if (message.action === "bg") {
         para.classList.replace(para.classList[1], message.color)
     }
     if (message.action === "switchedTab") {
-        remainingTime = message.time;
         isRunning = message.running;
-        console.log(isRunning)
+        startTime = Date.now()
+        ogTime = message.time
+
+        document.body.appendChild(para);
+
         createPara();
         updatePara();
+        para.classList.replace(para.classList[1], message.color)
     }
     if (message.action === "tabReloaded") {
-        remainingTime = message.time;
         isRunning = message.running;
-        console.log(isRunning)
+        startTime = Date.now()
+        ogTime = message.time
+
+        document.body.appendChild(para);
         createPara();
         updatePara();
+        para.classList.replace(para.classList[1], message.color)
     }
 });
 
 document.addEventListener("visibilitychange", () => {
-    isRunning = false;
+    if (document.hidden) {
+        document.body.removeChild(document.getElementById("draggable-timers"));
+    }
 });
 
 function formatPara() {
-    let totalSeconds = Math.floor(remainingTime / 1000)
+    let totalSeconds = Math.floor((ogTime - Date.now() + startTime) / 1000)
     let minutes = Math.floor(totalSeconds / 60);
     let seconds = totalSeconds % 60;
     return String(minutes).padStart(2, "0") + ":" + String(seconds).padStart(2, "0");
@@ -76,16 +87,15 @@ function createPara() {
         });
     }
     para.textContent = formatPara()
-    remainingTime -= 1000
 }
+
 
 function updatePara() {
     para.textContent = formatPara()
-    remainingTime -= 1000
+
     let interval = setInterval(() => {
         if (isRunning) {
             para.textContent = formatPara()
-            remainingTime -= 1000
         } else {
             clearInterval(interval)
         }
