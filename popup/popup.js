@@ -25,7 +25,7 @@ studyButton.addEventListener("click",
             currentWindow: true
         });
         browser.tabs.sendMessage(tab.id, { action: "bg", color: "study" });
-        browser.tabs.sendMessage(tab.id, { action: "timeUpdated", time: timerTime });
+        browser.tabs.sendMessage(tab.id, { action: "timeUpdated", time: timerTime, newTimes: timeSet });
 
         await (loadState())
     })
@@ -35,7 +35,7 @@ shortButton.addEventListener("click",
         timerTime = timeSet[1];
         sliderBg.classList.replace(sliderBg.classList[1], "slider-bg-sbreak")
         body.classList.replace(body.classList[0], "sbreak-mode-colors")
-        await browser.runtime.sendMessage({ type: "timeUpdated", time: timerTime, set: "sbreak" })
+        await browser.runtime.sendMessage({ type: "timeUpdated", time: timerTime, set: "sbreak", newTimes: timeSet })
         const [tab] = await browser.tabs.query({
             active: true,
             currentWindow: true
@@ -52,7 +52,7 @@ longButton.addEventListener("click",
         timerTime = timeSet[2];
         sliderBg.classList.replace(sliderBg.classList[1], "slider-bg-lbreak")
         body.classList.replace(body.classList[0], "lbreak-mode-colors")
-        await browser.runtime.sendMessage({ type: "timeUpdated", time: timerTime, set: "lbreak" })
+        await browser.runtime.sendMessage({ type: "timeUpdated", time: timerTime, set: "lbreak", newTimes: timeSet })
         const [tab] = await browser.tabs.query({
             active: true,
             currentWindow: true

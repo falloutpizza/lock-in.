@@ -75,7 +75,6 @@ browser.runtime.onMessage.addListener(async (msg) => {
             set: msg.set,
             timeSet: msg.newTimes
         }
-        console.log(newState)
         await browser.storage.local.set({ timerState: newState })
     }
 });
