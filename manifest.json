@@ -36,7 +36,14 @@
             ]
         }
     ],
-    "content_security_policy": {
-        "extension_pages": "script-src 'self'; object-src 'self'; media-src 'self'"
-    }
+    "web_accessible_resources": [
+        {
+            "resources": [
+                "sounds/notif.mp3"
+            ],
+            "matches": [
+                "<all_urls>"
+            ]
+        }
+    ]
 }

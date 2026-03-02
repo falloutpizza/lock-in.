@@ -6,6 +6,10 @@ para.classList.add("para")
 para.classList.add("study")
 document.body.appendChild(para);
 
+const audio = new Audio(
+    browser.runtime.getURL("sounds/notif.mp3")
+);
+
 browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.action === "startTimer") {
         startTime = Date.now()
@@ -52,7 +56,7 @@ browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 document.addEventListener("visibilitychange", () => {
     if (document.hidden) {
-        document.body.removeChild(document.getElementById("draggable-timers"));
+        document.body.removeChild(document.getElementById("draggable-timer"));
     }
 });
 
@@ -91,10 +95,13 @@ function formatPara() {
 }
 
 function updatePara() {
-    formatPara;
     let interval = setInterval(() => {
-        if (isRunning) {
+        if (isRunning && (ogTime - Date.now() + startTime >= 0)) {
             para.textContent = formatPara()
+            if (para.textContent == "00:00") {
+                para.textContent = " time's up! ";
+                audio.play();
+            }
         } else {
             clearInterval(interval)
         }

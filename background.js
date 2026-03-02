@@ -4,6 +4,7 @@ let timerState = {
     remainingTime: 25 * 60 * 1000,
     ogTime: 25,
     set: "study",
+    timeSet: [25, 5, 10]
 };
 
 browser.runtime.onInstalled.addListener(async () => {
@@ -32,6 +33,10 @@ browser.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
     if (changeInfo.status === "complete" && state.startTime !== 0) {
         browser.tabs.sendMessage(tabId, {
             action: "tabReloaded", time: (state.remainingTime - elapsed), running: state.isRunning, color: state.set
+        });
+    } else {
+        browser.tabs.sendMessage(activeInfo.tabId, {
+            action: "tabReloaded", time: (state.remainingTime), running: state.isRunning, color: state.set
         });
     }
 });
@@ -68,7 +73,9 @@ browser.runtime.onMessage.addListener(async (msg) => {
             remainingTime: msg.time * 60 * 1000,
             ogTime: msg.time,
             set: msg.set,
+            timeSet: msg.newTimes
         }
+        console.log(newState)
         await browser.storage.local.set({ timerState: newState })
     }
 });

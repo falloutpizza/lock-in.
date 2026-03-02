@@ -85,25 +85,29 @@ settings.addEventListener("click",
 settingsForm.addEventListener("submit", async function (e) {
     e.preventDefault();
     if (document.getElementById("study").value != "") {
-        timeSet[0] = document.getElementById("study").value;
+        timeSet[0] = parseInt(document.getElementById("study").value);
     }
     if (document.getElementById("sbreak").value != "") {
-        timeSet[1] = document.getElementById("sbreak").value;
+        timeSet[1] = parseInt(document.getElementById("sbreak").value);
 
     }
     if (document.getElementById("lbreak").value != "") {
-        timeSet[2] = document.getElementById("lbreak").value;
+        timeSet[2] = parseInt(document.getElementById("lbreak").value);
 
     }
 
     document.querySelector(".settings-popup").classList.toggle("show");
     document.querySelector(".settings-popup").classList.toggle("hide");
+    let set;
     if (sliderBg.classList.contains("slider-bg-study")) {
         timerTime = timeSet[0]
+        set = "study"
     } else if (sliderBg.classList.contains("slider-bg-sbreak")) {
         timerTime = timeSet[1]
+        set = "sbreak"
     } else if (sliderBg.classList.contains("slider-bg-lbreak")) {
         timerTime = timeSet[2]
+        set = "lbreak"
     }
     timerText.textContent = `${timerTime}:00`;
     const [tab] = await browser.tabs.query({
@@ -111,8 +115,9 @@ settingsForm.addEventListener("submit", async function (e) {
         currentWindow: true
     });
     browser.tabs.sendMessage(tab.id, { action: "timeUpdated", time: timerTime });
-    browser.runtime.sendMessage({ type: "timeUpdated", time: timerTime, newTimes: timeSet })
+    await browser.runtime.sendMessage({ type: "timeUpdated", time: timerTime, newTimes: timeSet, set: set })
     await loadState()
+    updateDisplay()
 })
 
 //timer function
@@ -141,8 +146,10 @@ async function updateDisplay() {
     }
     if (remaining <= 0) {
         remaining = 0;
-        browser.runtime.sendMessage({ type: "pauseTimer" })
         browser.tabs.sendMessage(tab.id, { action: "pauseTimer" });
+        await browser.runtime.sendMessage({ type: "pauseTimer" });
+        await browser.runtime.sendMessage({ type: "timeUpdated", time: timeSet[0], newTimes: timeSet, set: "study" })
+        await loadState();
     };
     timerText.textContent = formatTime(remaining);
 
@@ -154,6 +161,7 @@ async function loadState() {
     localState = await browser.runtime.sendMessage({ type: "getState" });
     startButton.textContent = localState.isRunning ? "pause" : "start";
     timerTime = localState.ogTime;
+    timeSet = localState.timeSet;
     if (localState.set == "study") {
         sliderBg.classList.replace(sliderBg.classList[1], "slider-bg-study")
         body.classList.replace(body.classList[0], "study-mode-colors")
