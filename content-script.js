@@ -4,7 +4,7 @@ let ogTime = 0
 let startTime = 0
 para.classList.add("para")
 para.classList.add("study")
-document.body.appendChild(para);
+para.style.visibility = "hidden";
 
 const audio = new Audio(
     browser.runtime.getURL("sounds/notif.mp3")
@@ -18,9 +18,11 @@ browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
         document.body.appendChild(para);
         createPara()
         updatePara()
+        para.style.visibility = "visible"
     }
     if (message.action === "pauseTimer") {
         isRunning = false
+        para.style.visibility = "hidden";
     }
     if (message.action == "timeUpdated") {
         isRunning = false
@@ -35,7 +37,6 @@ browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
         isRunning = message.running;
         startTime = Date.now()
         ogTime = message.time
-
         document.body.appendChild(para);
 
         createPara();
@@ -62,7 +63,9 @@ document.addEventListener("visibilitychange", () => {
 
 function createPara() {
     if (!document.getElementById("draggable-timer")) {
-        para.style.visibility = "visible";
+        para.style.visibility = "hidden"
+        if (isRunning) { para.style.visibility = "visible" }
+        console.log(para.style.visibility + isRunning)
         para.id = "draggable-timer"
         para.classList.add("para");
 

@@ -194,4 +194,6 @@ startButton.addEventListener("click", async () => {
     await loadState();
 });
 
+//show and hide onscreen timer
+
 document.addEventListener("DOMContentLoaded", loadState);
