@@ -4,6 +4,7 @@ let ogTime = 0
 let startTime = 0
 para.classList.add("para")
 para.classList.add("study")
+document.body.appendChild(para);
 
 browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.action === "startTimer") {
@@ -19,7 +20,7 @@ browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
     }
     if (message.action == "timeUpdated") {
         isRunning = false
-        ogTime = message.time * 60 * 1000
+        ogTime = (message.time) * 60 * 1000
         startTime = Date.now()
         para.textContent = formatPara()
     }
@@ -90,8 +91,7 @@ function formatPara() {
 }
 
 function updatePara() {
-    para.textContent = formatPara()
-
+    formatPara;
     let interval = setInterval(() => {
         if (isRunning) {
             para.textContent = formatPara()

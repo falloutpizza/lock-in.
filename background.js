@@ -18,6 +18,10 @@ browser.tabs.onActivated.addListener(async (activeInfo) => {
         browser.tabs.sendMessage(activeInfo.tabId, {
             action: "switchedTab", time: (state.remainingTime - elapsed), running: state.isRunning, color: state.set
         });
+    } else {
+        browser.tabs.sendMessage(activeInfo.tabId, {
+            action: "switchedTab", time: (state.remainingTime), running: state.isRunning, color: state.set
+        });
     }
 });
 

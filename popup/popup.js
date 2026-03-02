@@ -152,7 +152,6 @@ async function updateDisplay() {
 
 async function loadState() {
     localState = await browser.runtime.sendMessage({ type: "getState" });
-    console.log(localState.ogTime)
     startButton.textContent = localState.isRunning ? "pause" : "start";
     timerTime = localState.ogTime;
     if (localState.set == "study") {
