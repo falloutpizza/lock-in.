@@ -1,5 +1,5 @@
 body {
-    height: 350px;
+    height: 375px;
     width: 270px;
     text-align: center;
     background-color: var(--background-color);
@@ -81,7 +81,7 @@ input {
 .settings-popup {
     visibility: hidden;
     position: absolute;
-    height: 315px;
+    height: 335px;
     width: 270px;
     margin-top: 30px;
     background-color: var(--settings-bg-color);
@@ -222,16 +222,12 @@ input {
     transition: stroke-dashoffset 1s linear;
 }
 
-/* Time display text */
 .timer-text {
     font-size: 20px;
     font-weight: bold;
     fill: #333;
-    /* Text color */
     text-anchor: middle;
-    /* Center text horizontally */
     dominant-baseline: middle;
-    /* Center text vertically */
     transform-origin: 50% 50%;
     transform: rotate(90deg);
 }
@@ -241,4 +237,15 @@ input {
     width: 80px;
     height: 30px;
     font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+.reset {
+    font-size: 0.8rem;
+    margin: 0;
+}
+
+.reset:hover {
+    text-decoration: underline;
+    cursor: pointer;
 }

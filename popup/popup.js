@@ -9,6 +9,7 @@ let longButton = document.querySelector(".long-break")
 let settings = document.querySelector(".settings")
 let settingsForm = document.querySelector(".settings-form")
 let startButton = document.querySelector(".start-button")
+let reset = document.querySelector(".reset");
 let localState = null;
 let interval = null;
 
@@ -98,6 +99,30 @@ settingsForm.addEventListener("submit", async function (e) {
 
     document.querySelector(".settings-popup").classList.toggle("show");
     document.querySelector(".settings-popup").classList.toggle("hide");
+    let set;
+    if (sliderBg.classList.contains("slider-bg-study")) {
+        timerTime = timeSet[0]
+        set = "study"
+    } else if (sliderBg.classList.contains("slider-bg-sbreak")) {
+        timerTime = timeSet[1]
+        set = "sbreak"
+    } else if (sliderBg.classList.contains("slider-bg-lbreak")) {
+        timerTime = timeSet[2]
+        set = "lbreak"
+    }
+    timerText.textContent = `${timerTime}:00`;
+    const [tab] = await browser.tabs.query({
+        active: true,
+        currentWindow: true
+    });
+    browser.tabs.sendMessage(tab.id, { action: "timeUpdated", time: timerTime });
+    await browser.runtime.sendMessage({ type: "timeUpdated", time: timerTime, newTimes: timeSet, set: set })
+    await loadState()
+    updateDisplay()
+})
+
+reset.addEventListener("click", async function (e) {
+    e.preventDefault();
     let set;
     if (sliderBg.classList.contains("slider-bg-study")) {
         timerTime = timeSet[0]
