@@ -19,13 +19,13 @@ studyButton.addEventListener("click",
         timerTime = timeSet[0];
         sliderBg.classList.replace(sliderBg.classList[1], "slider-bg-study")
         body.classList.replace(body.classList[0], "study-mode-colors")
-        await browser.runtime.sendMessage({ type: "timeUpdated", time: timerTime, set: "study" })
+        await browser.runtime.sendMessage({ type: "timeUpdated", time: timerTime, set: "study", newTimes: timeSet })
         const [tab] = await browser.tabs.query({
             active: true,
             currentWindow: true
         });
         browser.tabs.sendMessage(tab.id, { action: "bg", color: "study" });
-        browser.tabs.sendMessage(tab.id, { action: "timeUpdated", time: timerTime, newTimes: timeSet });
+        browser.tabs.sendMessage(tab.id, { action: "timeUpdated", time: timerTime });
 
         await (loadState())
     })
