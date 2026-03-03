@@ -26,6 +26,7 @@ browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
     }
     if (message.action == "timeUpdated") {
         isRunning = false
+        para.style.visibility = "hidden";
         ogTime = (message.time) * 60 * 1000
         startTime = Date.now()
         para.textContent = formatPara()
